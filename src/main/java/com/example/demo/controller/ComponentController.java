@@ -14,29 +14,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Product;
-import com.example.demo.service.ProductService;
-
-
+import com.example.demo.entity.Component;
+import com.example.demo.service.ComponentService;
 
 @RestController
-public class ProductController {
+public class ComponentController {
 	@Autowired
-	 ProductService productService;
-	@GetMapping("/product")
-	Iterable<Product> getProducts() {
-	      return productService.getProducts();
+	 ComponentService componentService;
+	@GetMapping("/component")
+	Iterable<Component> getComponents() {
+	      return componentService.getComponents();
 	 }
-	@GetMapping("/product/{id}")
-	Optional<Product> getProducts(@PathVariable("id")Integer id){
-		return productService.getproduct(id);
+	@GetMapping("/component/{id}")
+	Optional<Component> getComponents(@PathVariable("id")Integer id){
+		return componentService.getcomponent(id);
 	}
 
-	@PostMapping("/product")
+	@PostMapping("/component")
 	@Transactional
 	@ResponseStatus(code = HttpStatus.CREATED)
-	void createProduct(@RequestBody @Valid Product product) {
-		productService.saveProduct(product);
-	}
+	void createComponent(@RequestBody @Valid Component component) {
+		componentService.saveComponent(component);
 
+}
 }
