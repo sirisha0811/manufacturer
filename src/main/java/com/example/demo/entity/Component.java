@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -30,10 +31,15 @@ public class Component {
 	public String getProduct_name() {
 		return product_name;
 	}
-	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	// @ManyToOne(fetch = FetchType.LAZY, optional = false)
+     //@JoinColumn(name = "product_id", nullable = false)
+	@OneToOne(mappedBy ="component")
+ 
+     @ManyToOne(fetch = FetchType.LAZY, optional = false)
      @JoinColumn(name = "product_id", nullable = false)
+     Product product;
 	 
-	 private Product product;
+	 
 	 
 	public Product getProduct() {
 		return product;

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -27,10 +28,11 @@ public class Product {
 	@Size(max=25)
 	public String product_name;
 	public String quantity;
-	
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Set<Component> components;
+	 @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
+	            cascade = CascadeType.ALL)
+	    private Set<Component> components;
+	//@NotNull
+	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	public Set<Component> getComponents() {
 		return components;
 	}
