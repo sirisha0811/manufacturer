@@ -1,46 +1,56 @@
 package com.example.demo.entity;
+
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 public class Component {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Integer component_id;
+	Integer component_id;
+
 	@NotBlank
 	@NotEmpty
-	@Size(max=25)
-	public String name;
-	
+	@Size(max = 25)
+	String component_name;
+
 	@NotBlank
-	@Size(max=100)
-	public String description;
-	public String suppliers;
-	public String product_name;
-	public String getProduct_name() {
-		return product_name;
+	@Size(max = 50)
+	String description;
+
+	String supplier_name;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "product_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "product_id")
+	@JsonIdentityReference(alwaysAsId = true)
+	@JsonProperty("product_id")
+	private Product product;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "component_supplier", joinColumns = @JoinColumn(name = "component_id"), inverseJoinColumns = @JoinColumn(name = "suppler_id"))
+	private Set<Supplier> supplierSet = new HashSet<>();
+	
+	public Set<Supplier> getSupplierSet() {
+		return supplierSet;
 	}
-	// @ManyToOne(fetch = FetchType.LAZY, optional = false)
-     //@JoinColumn(name = "product_id", nullable = false)
-	@OneToOne(mappedBy ="component")
- 
-     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-     @JoinColumn(name = "product_id", nullable = false)
-     Product product;
-	 
-	 
-	 
+
+	public void setSupplierSet(Set<Supplier> supplierSet) {
+		this.supplierSet = supplierSet;
+	}
+
 	public Product getProduct() {
 		return product;
 	}
@@ -49,34 +59,36 @@ public class Component {
 		this.product = product;
 	}
 
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
-	}
-	
 	public Integer getComponent_id() {
 		return component_id;
 	}
+
 	public void setComponent_id(Integer component_id) {
 		this.component_id = component_id;
 	}
-	public String getName() {
-		return name;
+
+	public String getComponent_name() {
+		return component_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setComponent_name(String component_name) {
+		this.component_name = component_name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getSuppliers() {
-		return suppliers;
+
+	public String getSupplier_name() {
+		return supplier_name;
 	}
-	public void setSuppliers(String suppliers) {
-		this.suppliers = suppliers;
+
+	public void setSupplier_name(String supplier_name) {
+		this.supplier_name = supplier_name;
 	}
-	
 
 }
